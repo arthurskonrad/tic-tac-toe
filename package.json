@@ -4,12 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "browserify": "browserify app/dist/js/app.js > app/dist/index.js",
+    "watchify": "watchify app/dist/js/app.js -o app/dist/index.js",
+    "start:nodemon": "nodemon index.js",
+    "build:tsc": "tsc",
+    "watch:tsc": "tsc -w",
+    "livereload": "livereload -w 1000",
+    "start": "concurrently \"npm run watch:tsc\" \"npm run start:nodemon\" \"npm run watchify\" \"npm run livereload\""
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.56.0",
-    "prettier": "3.2.5"
+    "@types/node": "^20.11.16",
+    "browserify": "^17.0.0",
+    "concurrently": "^6.0.0",
+    "express": "^4.18.2",
+    "livereload": "^0.9.3",
+    "nodemon": "^3.0.3",
+    "prettier": "3.2.5",
+    "typescript": "^4.8.3",
+    "watchify": "^4.0.0"
   }
 }

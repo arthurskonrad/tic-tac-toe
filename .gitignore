@@ -1,2 +1,4 @@
-node_modules
-.idea
+dist/js/
+app/dist/js/
+app/dist/index.js
+node_modules/
