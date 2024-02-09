@@ -7,4 +7,10 @@ type AddEventType = {
 type RemoveEventType = {
   el: HTMLElement | null;
   eventType: string;
-}
+};
+
+type GridType = (HTMLElement | null)[][];
+
+type EventCallbacksType = {
+  [key: string]: EventListenerOrEventListenerObject;
+};

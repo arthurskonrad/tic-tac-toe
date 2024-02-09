@@ -1,11 +1,7 @@
 class Player {
-  constructor() {
-    console.log("an instance os a player was created");
-  }
+  constructor() {}
 
-  onClick() {
-    console.log("player has clicked!");
-  }
+  onClick() {}
 }
 
 export { Player };

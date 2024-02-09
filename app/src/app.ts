@@ -1,98 +1,37 @@
 import { Player } from "./engine/Player";
+import { Grid } from "./engine/Grid";
+import { isObjectEmpty } from "./helpers/isObjectEmpty";
 
-let beginGame = false;
+let isGameRunning = false;
+let grid = new Grid();
 const toggleGame = document.getElementById("toggle_game");
 
-const ticTacToeGridEl = [
-  [
-    document.getElementById("00"),
-    document.getElementById("01"),
-    document.getElementById("02"),
-  ],
-  [
-    document.getElementById("10"),
-    document.getElementById("11"),
-    document.getElementById("12"),
-  ],
-  [
-    document.getElementById("20"),
-    document.getElementById("21"),
-    document.getElementById("22"),
-  ],
-];
-
-const actionCallbacks: any = {};
-
-function addEvent({ el, eventType, callback }: AddEventType) {
-  if (!el) return;
-
-  const key = `${el.id}-${eventType}`;
-
-  actionCallbacks[key] = callback;
-
-  el.addEventListener(eventType, callback);
-}
-
-function removeEvent({ el, eventType }: RemoveEventType) {
-  if (!el) return;
-
-  const key = `${el.id}-${eventType}`;
-
-  if (actionCallbacks[key]) {
-    el.removeEventListener(eventType, actionCallbacks[key]);
-    delete actionCallbacks[key];
+function start(isGameRunning: boolean) {
+  if (isObjectEmpty(grid.eventCallbacks) && isGameRunning) {
+    grid.setupTicTacToeGridEl();
   }
+
+  toggleEngine();
 }
 
-function setupTicTacToeGridEl() {
-  for (let i = 0; i < ticTacToeGridEl.length; i++) {
-    for (let j = 0; j < ticTacToeGridEl[i].length; j++) {
-      const currentEl = ticTacToeGridEl[i][j];
-      const callback = function () {
-        console.log({ position: [i, j], player: 0 });
-      };
-
-      addEvent({ el: currentEl, eventType: "click", callback });
+function toggleEngine() {
+  if (isGameRunning) {
+    if (toggleGame !== null) {
+      toggleGame.innerHTML = "End game";
     }
-  }
-}
 
-function cleanTicTacToeGridEl() {
-  for (let i = 0; i < ticTacToeGridEl.length; i++) {
-    for (let j = 0; j < ticTacToeGridEl[i].length; j++) {
-      const currentEl = ticTacToeGridEl[i][j];
-
-      removeEvent({ el: currentEl, eventType: "click" });
+    // const players = [new Player(), new Player()];
+  } else {
+    if (toggleGame !== null) {
+      toggleGame.innerHTML = "Start new game";
     }
+
+    grid.cleanTicTacToeGridEl();
   }
-}
-
-function startGame() {
-  if (toggleGame !== null) {
-    toggleGame.innerHTML = "End game";
-  }
-
-  const players = [new Player(), new Player()];
-
-  players[0].onClick();
-
-  setupTicTacToeGridEl();
-}
-
-function endGame() {
-  if (toggleGame !== null) {
-    toggleGame.innerHTML = "Start new game";
-  }
-
-  cleanTicTacToeGridEl();
 }
 
 toggleGame?.addEventListener("click", function () {
-  beginGame = !beginGame;
+  isGameRunning = !isGameRunning;
 
-  if (beginGame) {
-    startGame();
-  } else {
-    endGame();
-  }
+  start(isGameRunning);
 });
