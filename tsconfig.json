@@ -1,12 +1,17 @@
 {
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
+  ],
   "compilerOptions": {
-    "outDir": "app/dist/js",
-    "target": "ES5",
-    "noEmitOnError": true,
-    "noImplicitAny": true,
-    "removeComments": true,
-    "strictNullChecks": true,
-    "experimentalDecorators": true
-  },
-  "include": ["app/src/**/*"]
+    "module": "NodeNext"
+  }
 }
