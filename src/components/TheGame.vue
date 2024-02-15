@@ -2,5 +2,5 @@
 </script>
 
 <template>
-  <h1>TicTacToe Home Page</h1>
+  <h1>TicTacToe Game</h1>
 </template>
