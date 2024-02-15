@@ -1,6 +1,0 @@
-<script setup lang="ts">
-</script>
-
-<template>
-  <h1>TicTacToe Home Page</h1>
-</template>
