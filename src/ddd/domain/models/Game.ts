@@ -1,15 +1,36 @@
+import { Player } from './Player'
 import type { GameInterface } from '../entities/GameInterface'
 
+type GameType = {
+  players: Player[]
+}
+
 export class Game implements GameInterface {
-  constructor() {}
+  public player1: Player
+  public player2: Player
 
-  startGame() {}
+  constructor(params: GameType) {
+    this.player1 = params.players[0]
+    this.player2 = params.players[1]
+  }
 
-  changePlayerTurn() {}
+  startGame() {
+    console.log('Game Started')
+  }
 
-  choosePosition() {}
+  changePlayerTurn() {
+    console.log('Game Changed Player Turn')
+  }
 
-  isThereAWinner() {}
+  choosePosition() {
+    console.log('Game Choose Position')
+  }
 
-  endGame() {}
+  isThereAWinner() {
+    console.log('Game Verified if is there a Winner')
+  }
+
+  endGame() {
+    console.log('Game Ended')
+  }
 }

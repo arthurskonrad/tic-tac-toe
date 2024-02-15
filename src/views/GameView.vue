@@ -1,9 +1,9 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import TheGame from '../components/TheGame.vue'
 </script>
 
 <template>
-  <main>
-    <TheGame />
-  </main>
+  <RouterLink to="/">Back to Home</RouterLink>
+  <TheGame />
 </template>
