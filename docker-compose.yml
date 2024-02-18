@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+
+  frontend:
+    build:
+      context: .docker/build/frontend
+      dockerfile: Dockerfile
+    volumes:
+      - ./frontend/:/var/www
+    command: /bin/sh -c "npm install && npm run dev:host"
+    tty: true
