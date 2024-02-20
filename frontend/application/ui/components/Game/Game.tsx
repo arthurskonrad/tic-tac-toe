@@ -35,7 +35,7 @@ export function Game() {
   };
 
   return (
-    <div className="game">
+    <div className="flex flex-col gap-4">
       <button onClick={newGame}>
         {gameIsRunning ? "Apagar Jogo" : "Novo jogo"}
       </button>
