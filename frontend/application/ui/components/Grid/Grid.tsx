@@ -1,10 +1,8 @@
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import "./Grid.css";
 
-type Props = {
-  children: ReactNode;
-};
+type Props = unknown;
 
-export function Grid({ children }: Props) {
+export function Grid({ children }: PropsWithChildren<Props>) {
   return <div className="grid">{children}</div>;
 }
