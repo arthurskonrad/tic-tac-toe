@@ -1,9 +1,8 @@
-import { Game } from "./components/Game";
+import { Game } from "./features/Game";
 
 function App() {
   return (
-    <main className="flex flex-col gap-4 items-center justify-center">
-      <h1>TicTacToe!</h1>
+    <main className="bg-fuchsia-100 flex flex-col gap-4 items-center justify-center h-screen w-screen">
       <Game />
     </main>
   );
