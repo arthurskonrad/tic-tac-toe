@@ -1,62 +1,124 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Grid } from "../../components/Grid";
 import { GridItem } from "../../components/GridItem";
 
 export type Position = {
   id: number;
-  x: number;
-  y: number;
   character: string;
 };
 
+const initialPositions: Position[] = [
+  { id: 1, character: "" },
+  { id: 2, character: "" },
+  { id: 3, character: "" },
+  { id: 4, character: "" },
+  { id: 5, character: "" },
+  { id: 6, character: "" },
+  { id: 7, character: "" },
+  { id: 8, character: "" },
+  { id: 9, character: "" },
+];
+
 export function Game() {
   const [isGameRunning, setIsGameRunning] = useState<boolean>(false);
-  const [positions, setPositions] = useState<Position[]>();
+  const [positionsSkeleton, setPositionSkeleton] =
+    useState<Position[]>(initialPositions);
+  const [positions, setPositions] = useState<Position[]>(positionsSkeleton);
+  const [score, setScore] = useState<Position[][]>([]);
+  const [currentCharacter, setCurrentCharacter] = useState<string>("o");
 
   const newGame = function () {
     setIsGameRunning(true);
-
-    setPositions([
-      { id: 1, x: 0, y: 0, character: "" },
-      { id: 2, x: 0, y: 1, character: "" },
-      { id: 3, x: 0, y: 2, character: "" },
-      { id: 4, x: 1, y: 0, character: "" },
-      { id: 5, x: 1, y: 1, character: "" },
-      { id: 6, x: 1, y: 2, character: "" },
-      { id: 7, x: 2, y: 0, character: "" },
-      { id: 8, x: 2, y: 1, character: "" },
-      { id: 9, x: 2, y: 2, character: "" },
-    ]);
   };
 
-  const endGame = function () {
+  const endGame = useCallback(() => {
+    if (!positions) {
+      return;
+    }
+
+    setScore([...score, positions]);
+
     setIsGameRunning(false);
-    setPositions([]);
+    setPositionSkeleton(positions ? positions : []);
+    setPositions(initialPositions);
+    setCurrentCharacter("o");
+  }, [positions, score, setPositionSkeleton, setPositions, setIsGameRunning]);
+
+  const handleClick = function (position: Position) {
+    const newPositions = positions?.map((p) => {
+      if (p.id === position.id) {
+        return { ...p, character: currentCharacter };
+      }
+
+      return p;
+    });
+
+    setCurrentCharacter(currentCharacter === "o" ? "x" : "o");
+    setPositions(newPositions);
   };
+
+  const validateWinner = function (positions: Position[] | undefined) {
+    if (!positions) {
+      return false;
+    }
+
+    const winningPositions = [
+      [1, 2, 3],
+      [4, 5, 6],
+      [7, 8, 9],
+      [1, 4, 7],
+      [2, 5, 8],
+      [3, 6, 9],
+      [1, 5, 9],
+      [3, 5, 7],
+    ];
+
+    return winningPositions.some((winningSequence) => {
+      const [a, b, c] = winningSequence;
+
+      const aCharacter = positions[a - 1].character;
+      const bCharacter = positions[b - 1].character;
+      const cCharacter = positions[c - 1].character;
+
+      return (
+        aCharacter && aCharacter === bCharacter && aCharacter === cCharacter
+      );
+    });
+  };
+
+  useEffect(() => {
+    if (validateWinner(positions)) {
+      endGame();
+    }
+  }, [positions, endGame]);
 
   return (
     <div className="flex flex-col justify-center items-center gap-4">
       {!isGameRunning && (
-        <button
-          onClick={newGame}
-          className="bg-fuchsia-400 rounded p-2 hover:bg-fuchsia-300 text-white font-bold uppercase"
-        >
-          Novo jogo
-        </button>
+        <>
+          <button onClick={newGame}>Novo jogo</button>
+
+          {score.length > 0 && (
+            <Grid>
+              {positionsSkeleton?.map((position) => (
+                <GridItem key={position.id} position={position} />
+              ))}
+            </Grid>
+          )}
+        </>
       )}
 
       {isGameRunning && (
         <>
-          <button
-            onClick={endGame}
-            className="bg-fuchsia-400 rounded p-2 hover:bg-fuchsia-300 text-white font-bold uppercase"
-          >
-            Encerrar jogo
-          </button>
+          <button onClick={endGame}>Encerrar jogo</button>
 
           <Grid>
             {positions?.map((position) => (
-              <GridItem key={position.id} position={position} />
+              <GridItem
+                key={position.id}
+                position={position}
+                onClick={handleClick}
+              />
             ))}
           </Grid>
         </>
