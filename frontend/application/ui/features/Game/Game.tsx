@@ -19,6 +19,17 @@ const initialPositions: Position[] = [
   { id: 9, character: "" },
 ];
 
+const winningPositions = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9],
+  [1, 5, 9],
+  [3, 5, 7],
+];
+
 export function Game() {
   const [isGameRunning, setIsGameRunning] = useState<boolean>(false);
   const [positionsSkeleton, setPositionSkeleton] =
@@ -45,6 +56,10 @@ export function Game() {
   }, [positions, score, setPositionSkeleton, setPositions, setIsGameRunning]);
 
   const handleClick = function (position: Position) {
+    if (alreadyPlayed(position)) {
+      return;
+    }
+
     const newPositions = positions?.map((p) => {
       if (p.id === position.id) {
         return { ...p, character: currentCharacter };
@@ -57,21 +72,14 @@ export function Game() {
     setPositions(newPositions);
   };
 
+  const alreadyPlayed = function (position: Position) {
+    return position.character !== "";
+  }
+
   const validateWinner = function (positions: Position[] | undefined) {
     if (!positions) {
       return false;
     }
-
-    const winningPositions = [
-      [1, 2, 3],
-      [4, 5, 6],
-      [7, 8, 9],
-      [1, 4, 7],
-      [2, 5, 8],
-      [3, 6, 9],
-      [1, 5, 9],
-      [3, 5, 7],
-    ];
 
     return winningPositions.some((winningSequence) => {
       const [a, b, c] = winningSequence;
@@ -86,8 +94,16 @@ export function Game() {
     });
   };
 
+  const validateTie = function (positions: Position[] | undefined) {
+    if (!positions) {
+      return false;
+    }
+
+    return positions.every((position) => position.character !== "");
+  }
+
   useEffect(() => {
-    if (validateWinner(positions)) {
+    if (validateWinner(positions) || validateTie(positions)) {
       endGame();
     }
   }, [positions, endGame]);
